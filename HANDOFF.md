@@ -50,6 +50,29 @@ Local dev URL:
 http://127.0.0.1:5173/
 ```
 
+## Deployment
+
+**Platform**: GitHub Pages + GitHub Actions
+
+**Repository**: [github.com/dddxmf/2mo](https://github.com/dddxmf/2mo)
+
+**Live URL**: `https://dddxmf.com`
+
+**Domain Management**:
+- Domain Registrar: 百度云 (Baidu Cloud)
+- DNS Records:
+  - CNAME `www` → `dddxmf.github.io`
+  - CNAME `@` → `dddxmf.github.io`
+- Custom domain configured in GitHub repo Settings → Pages → Custom domain
+- CNAME file at `public/CNAME` ensures it survives each deploy
+
+**Deploy Flow**:
+- Push to `main` branch triggers `.github/workflows/deploy.yml`
+- GitHub Actions builds (`npm ci` + `npm run build`) and deploys to GitHub Pages
+- `vite.config.ts` `base` is set to `'/'` for custom domain
+
+**Important**: If the custom domain is ever removed, change `base` back to `'/2mo/'` in `vite.config.ts`.
+
 ## Key Files
 
 - `src/App.tsx`
