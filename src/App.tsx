@@ -657,7 +657,7 @@ export default function App() {
     : 'opacity-0 translate-y-6';
 
   return (
-    <div className="min-h-screen bg-black text-white font-body overflow-x-clip">
+    <div className="min-h-[100svh] bg-black text-white font-body overflow-x-clip">
       <div
         ref={videoBgRef}
         className="fixed top-0 left-0 w-full h-full z-0 scale-[1.08] origin-center"

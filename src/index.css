@@ -19,13 +19,14 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-safe-offset);
-  scroll-snap-type: y proximity;
+  overflow-y: auto;
 }
 
 body {
   margin: 0;
   font-family: 'Barlow', sans-serif;
   background: #000;
+  touch-action: pan-y;
 }
 
 ::-webkit-scrollbar {

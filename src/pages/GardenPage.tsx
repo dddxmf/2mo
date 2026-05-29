@@ -46,7 +46,12 @@ type SourceItem = {
   links: LinkInfo[];
 };
 
-const HERO_TAGS = ['精选工具', '模型动态', '行业观察', '内容源'];
+const HERO_TAGS = [
+  { label: '精选工具', href: '#section-tools' },
+  { label: '模型动态', href: '#section-models' },
+  { label: '行业观察', href: '#section-insights' },
+  { label: '内容源', href: '#section-sources' },
+];
 
 const MODEL_RELEASE_GROUPS: Array<{
   title: string;
@@ -197,7 +202,7 @@ const TOOL_GROUPS: Array<{
     english: 'Conversational Collaboration',
     items: [
       {
-        name: 'Claude（含 Dispatch 功能）',
+        name: 'Claude',
         release: 'Anthropic・2026.03.17（Dispatch 功能上线）',
         summary:
           '基于 Claude 旗舰模型的桌面协作工具，内置自动化任务能力，可自主完成文件处理、简单运维、日程管理等操作。',
@@ -464,7 +469,7 @@ const PRODUCT_INSIGHTS: ProductInsight[] = [
     release: '中国移动・2026.05.08（移动云大会）',
     summary:
       '国内大型大模型聚合服务平台（MaaS），整合多款主流国产大模型，提供统一调用与调度服务。',
-    trend: '单一模型逐步转向“模型集市”，降低企业选型、接入与运维成本。',
+    trend: '单一模型逐步转向"模型集市"，降低企业选型、接入与运维成本。',
     watch:
       '内置智能调度策略，可按需求匹配对应模型，主打稳定服务与行业落地，面向政企客户为主。',
     links: [
@@ -559,34 +564,6 @@ const RECOMMENDED_SOURCES: SourceItem[] = [
   },
 ];
 
-function renderSectionHeader(
-  eyebrow: string,
-  title: string,
-  description: string,
-  accent?: string,
-) {
-  return (
-    <div className="grid gap-6 lg:grid-cols-[0.68fr_1.32fr] lg:items-end lg:gap-24">
-      <div>
-        <p className="mb-4 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
-          {eyebrow}
-        </p>
-        <h2 className="font-project text-[clamp(44px,5.4vw,82px)] font-extrabold leading-[0.95] text-white">
-          {title}
-        </h2>
-      </div>
-      <div className="max-w-3xl lg:justify-self-end">
-        <p className={`text-sm font-body font-medium uppercase tracking-[0.22em] ${accent ?? 'text-[#ffdfa2]/72'}`}>
-          Curated Overview
-        </p>
-        <p className="mt-4 text-lg font-body font-light leading-8 text-white/68 md:text-2xl md:leading-[1.35]">
-          {description}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function renderLinks(links: LinkInfo[]) {
   return (
     <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5">
@@ -606,7 +583,6 @@ function renderLinks(links: LinkInfo[]) {
 }
 
 export default function GardenPage() {
-  const sectionRefs = useRef<HTMLElement[]>([]);
   const cardRefs = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
@@ -618,28 +594,6 @@ export default function GardenPage() {
         { opacity: 0, y: 34 },
         { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out', delay: 0.08 },
       );
-
-      const sections = sectionRefs.current.filter(Boolean);
-      sections.forEach((section) => {
-        const header = section.querySelector('.garden-section-head');
-        if (header) {
-          gsap.fromTo(
-            header,
-            { opacity: 0, y: 24 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.78,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: header,
-                start: 'top 84%',
-                toggleActions: 'play none none reverse',
-              },
-            },
-          );
-        }
-      });
 
       const cards = cardRefs.current.filter(Boolean);
       if (cards.length > 0) {
@@ -668,13 +622,25 @@ export default function GardenPage() {
 
   let cardIndex = 0;
 
+  const anchorPillClass =
+    'font-mono text-xs rounded-full border border-white/10 bg-white/[0.02] px-4 py-2 text-white/42 hover:text-white/72 hover:border-white/20 transition-colors duration-200';
+
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#020504] font-body text-white">
+    <div className="min-h-screen overflow-x-hidden bg-[#020504] font-body text-white">
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_8%,rgba(255,223,162,0.09),transparent_28%),radial-gradient(circle_at_84%_14%,rgba(175,203,255,0.08),transparent_26%),radial-gradient(circle_at_68%_78%,rgba(182,231,201,0.06),transparent_24%),linear-gradient(180deg,rgba(0,0,0,0.94)_0%,rgba(3,11,8,0.98)_48%,rgba(0,0,0,0.97)_100%)]" />
+        <video
+          src="/videos/garden_bg.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_8%,rgba(255,223,162,0.09),transparent_28%),radial-gradient(circle_at_84%_14%,rgba(175,203,255,0.08),transparent_26%),radial-gradient(circle_at_68%_78%,rgba(182,231,201,0.06),transparent_24%),linear-gradient(180deg,rgba(0,0,0,0.45)_0%,rgba(3,11,8,0.50)_48%,rgba(0,0,0,0.45)_100%)]" />
       </div>
 
-      <div className="fixed left-0 right-0 top-0 z-50 mx-auto max-w-7xl px-5 md:px-10">
+      <div className="fixed left-0 right-0 top-0 z-50 mx-auto max-w-6xl px-4 md:px-6">
         <div className="flex items-center py-5">
           <a
             href="/"
@@ -685,302 +651,277 @@ export default function GardenPage() {
         </div>
       </div>
 
-      <main className="relative z-10 mx-auto max-w-7xl px-5 pb-24 pt-24 md:px-10 md:pb-32 md:pt-32">
-        <section className="garden-hero-content garden-panel relative overflow-hidden rounded-[14px] px-7 py-10 md:px-10 md:py-12">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,223,162,0.05),transparent_26%,transparent_70%,rgba(175,203,255,0.05))]" />
-          <div className="relative z-10 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-24">
-            <div>
-              <p className="mb-5 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
-                Digital Garden
-              </p>
-              <h1 className="font-project text-[clamp(58px,8vw,108px)] font-extrabold leading-[0.95] text-white">
-                数字花园
-              </h1>
+      <main className="relative z-10 mx-auto max-w-6xl w-full px-4 pb-24 pt-24 md:px-6 md:pb-32 md:pt-32">
+
+        {/* ── HERO ── */}
+        <section className="garden-hero-content grid grid-cols-1 md:grid-cols-[1.3fr_0.85fr_0.85fr] gap-12 items-start">
+          <div className="col-span-1 min-w-0">
+            <p className="mb-5 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
+              Digital Garden
+            </p>
+            <h1 className="font-project text-[clamp(58px,8vw,108px)] font-extrabold leading-[0.95] text-white">
+              数字花园
+            </h1>
+          </div>
+          <div className="col-span-2 min-w-0">
+            <p className="text-sm font-body font-medium uppercase tracking-[0.22em] text-[#ffdfa2]/75">
+              Curated AI Landscape
+            </p>
+            <p className="mt-5 text-xl font-body font-light leading-9 text-white/72 md:text-3xl md:leading-[1.3]">
+              我持续筛选的 AI 工具、前沿模型、产品信号与优质信息源。
+            </p>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {HERO_TAGS.map((tag) => (
+                <a key={tag.label} href={tag.href} className={anchorPillClass}>
+                  {tag.label}
+                </a>
+              ))}
             </div>
-            <div className="max-w-3xl lg:justify-self-end">
-              <p className="text-sm font-body font-medium uppercase tracking-[0.22em] text-[#ffdfa2]/75">
-                Curated AI Landscape
+          </div>
+        </section>
+
+        {/* ── 精选工具 ── */}
+        <section id="section-tools" className="mt-16 md:mt-24">
+          <p className="mb-6 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
+            Selected Tools
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.85fr_0.85fr] gap-12 items-center">
+            <h2 className="font-project text-[clamp(44px,5.4vw,82px)] font-extrabold leading-[0.95] text-white">
+              精选工具
+            </h2>
+            <p className="col-span-2 text-lg font-body font-light leading-8 text-white/68 md:text-2xl md:leading-[1.35]">
+              经过实测筛选的高频实用 AI 工具，覆盖对话协作、编程开发、创意设计、视频创作四大场景，全部为市面主流可正常使用产品。
+            </p>
+          </div>
+          {TOOL_GROUPS.map((group) => (
+            <div key={group.title} className="col-span-full">
+              <h3 className="font-mono text-sm text-emerald-400/80 uppercase tracking-wider mb-1">
+                {group.title}
+              </h3>
+              <p className="text-xs font-body font-medium uppercase tracking-[0.22em] text-white/36 mb-6">
+                {group.english}
               </p>
-              <p className="mt-5 text-xl font-body font-light leading-9 text-white/72 md:text-3xl md:leading-[1.3]">
-                我持续筛选的 AI 工具、前沿模型、产品信号与优质信息源。
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+                {group.items.map((item) => {
+                  const currentIndex = cardIndex++;
+                  return (
+                    <article
+                      key={item.name}
+                      ref={(node) => {
+                        if (node) {
+                          cardRefs.current[currentIndex] = node;
+                        }
+                      }}
+                      className="garden-card garden-card--dense group rounded-[12px] p-6 md:p-7"
+                    >
+                      <p className="garden-meta-line">{item.release}</p>
+                      <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#fff1c9] md:text-3xl">
+                        {item.name}
+                      </h4>
+                      <p className="mt-5 text-base font-body font-light leading-7 text-white/74 md:text-lg md:leading-8">
+                        {item.summary}
+                      </p>
+                      <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
+                        <div>
+                          <p className="garden-kicker">对标参考</p>
+                          <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                            {item.benchmark}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="garden-kicker">值得关注</p>
+                          <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                            {item.watch}
+                          </p>
+                        </div>
+                      </div>
+                      {renderLinks(item.links)}
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* ── 模型上新 ── */}
+        <section id="section-models" className="mt-16 md:mt-24">
+          <p className="mb-6 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
+            Model Releases
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.85fr_0.85fr] gap-12 items-center">
+            <h2 className="font-project text-[clamp(44px,5.4vw,82px)] font-extrabold leading-[0.95] text-white">
+              模型上新
+            </h2>
+            <p className="col-span-2 text-lg font-body font-light leading-8 text-white/68 md:text-2xl md:leading-[1.35]">
+              最近值得关注的国内外大模型发布与能力解读，聚焦主流旗舰版本与技术趋势。
+            </p>
+          </div>
+          {MODEL_RELEASE_GROUPS.map((group) => (
+            <div key={group.title} className="col-span-full">
+              <h3 className="font-mono text-sm text-emerald-400/80 uppercase tracking-wider mb-1">
+                {group.title}
+              </h3>
+              <p className="text-xs font-body font-medium uppercase tracking-[0.22em] text-white/36 mb-6">
+                {group.english}
               </p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                {HERO_TAGS.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-body font-medium tracking-[0.14em] text-white/56"
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                {group.items.map((item) => {
+                  const currentIndex = cardIndex++;
+                  return (
+                    <article
+                      key={item.name}
+                      ref={(node) => {
+                        if (node) {
+                          cardRefs.current[currentIndex] = node;
+                        }
+                      }}
+                      className="garden-card garden-card--dense group rounded-[12px] p-6 md:p-7"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="garden-icon-wrap shrink-0">
+                          <img src={item.icon} alt={item.iconAlt} className="h-11 w-11 rounded-[12px] object-cover" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="garden-meta-line">{item.release}</p>
+                          <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#fff1c9] md:text-3xl">
+                            {item.name}
+                          </h4>
+                        </div>
+                      </div>
+                      <p className="mt-5 text-base font-body font-light leading-7 text-white/74 md:text-lg md:leading-8">
+                        {item.summary}
+                      </p>
+                      <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
+                        <div>
+                          <p className="garden-kicker">对标参考</p>
+                          <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                            {item.benchmark}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="garden-kicker">值得关注</p>
+                          <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                            {item.watch}
+                          </p>
+                        </div>
+                      </div>
+                      {renderLinks(item.links)}
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* ── 产品观察 ── */}
+        <section id="section-insights" className="mt-16 md:mt-24">
+          <p className="mb-6 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
+            Product Insights
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.85fr_0.85fr] gap-12 items-center">
+            <h2 className="font-project text-[clamp(44px,5.4vw,82px)] font-extrabold leading-[0.95] text-white">
+              产品观察
+            </h2>
+            <p className="col-span-2 text-lg font-body font-light leading-8 text-white/68 md:text-2xl md:leading-[1.35]">
+              行业内具备代表性的 AI 平台、企业级产品与服务形态，观察产品演进方向与行业趋势。
+            </p>
+          </div>
+          <div className="col-span-full">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+              {PRODUCT_INSIGHTS.map((item) => {
+                const currentIndex = cardIndex++;
+                return (
+                  <article
+                    key={item.name}
+                    ref={(node) => {
+                      if (node) {
+                        cardRefs.current[currentIndex] = node;
+                      }
+                    }}
+                    className="garden-card garden-card--dense group rounded-[12px] p-6 md:p-7"
                   >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-7 text-sm font-body font-light tracking-[0.18em] text-white/42 md:text-base">
-                精选工具・模型动态・行业观察・内容源
-              </p>
+                    <p className="garden-meta-line">{item.release}</p>
+                    <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#d6f5e1] md:text-3xl">
+                      {item.name}
+                    </h4>
+                    <p className="mt-5 text-base font-body font-light leading-7 text-white/74 md:text-lg md:leading-8">
+                      {item.summary}
+                    </p>
+                    <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
+                      <div>
+                        <p className="garden-kicker">代表趋势</p>
+                        <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                          {item.trend}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="garden-kicker">值得关注</p>
+                        <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                          {item.watch}
+                        </p>
+                      </div>
+                    </div>
+                    {renderLinks(item.links)}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        <section
-          ref={(node) => {
-            if (node) {
-              sectionRefs.current[0] = node;
-            }
-          }}
-          className="relative mt-16 md:mt-20"
-        >
-          <div className="garden-section-head">
-            {renderSectionHeader(
-              'Model Releases',
-              '模型上新',
-              '最近值得关注的国内外大模型发布与能力解读，聚焦主流旗舰版本与技术趋势。',
-            )}
+        {/* ── 信息源推荐 ── */}
+        <section id="section-sources" className="mt-16 md:mt-24">
+          <p className="mb-6 text-sm font-body font-medium uppercase tracking-[0.24em] text-white/42">
+            Recommended Sources
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.85fr_0.85fr] gap-12 items-center">
+            <h2 className="font-project text-[clamp(44px,5.4vw,82px)] font-extrabold leading-[0.95] text-white">
+              信息源推荐
+            </h2>
+            <p className="col-span-2 text-lg font-body font-light leading-8 text-white/68 md:text-2xl md:leading-[1.35]">
+              优质创作者、媒体与学习渠道，用于追踪行业动态、学习技术、参考工具实测经验。
+            </p>
           </div>
-
-          <div className="mt-12 space-y-10 md:mt-16 md:space-y-14">
-            {MODEL_RELEASE_GROUPS.map((group) => (
-              <div key={group.title}>
-                <div className="mb-6 flex flex-col gap-2 md:mb-8">
-                  <p className="text-xs font-body font-medium uppercase tracking-[0.22em] text-white/36 md:text-sm">
-                    {group.english}
-                  </p>
-                  <h3 className="text-3xl font-body font-bold text-white md:text-5xl">
-                    {group.title}
-                  </h3>
-                </div>
-                <div className="grid gap-5 lg:grid-cols-2">
-                  {group.items.map((item) => {
-                    const currentIndex = cardIndex++;
-                    return (
-                      <article
-                        key={item.name}
-                        ref={(node) => {
-                          if (node) {
-                            cardRefs.current[currentIndex] = node;
-                          }
-                        }}
-                        className="garden-card garden-card--dense group rounded-[12px] p-6 md:p-7"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="garden-icon-wrap shrink-0">
-                            <img src={item.icon} alt={item.iconAlt} className="h-11 w-11 rounded-[12px] object-cover" />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="garden-meta-line">{item.release}</p>
-                            <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#fff1c9] md:text-3xl">
-                              {item.name}
-                            </h4>
-                          </div>
-                        </div>
-                        <p className="mt-5 text-base font-body font-light leading-7 text-white/74 md:text-lg md:leading-8">
-                          {item.summary}
-                        </p>
-                        <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
-                          <div>
-                            <p className="garden-kicker">对标参考</p>
-                            <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                              {item.benchmark}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="garden-kicker">值得关注</p>
-                            <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                              {item.watch}
-                            </p>
-                          </div>
-                        </div>
-                        {renderLinks(item.links)}
-                      </article>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section
-          ref={(node) => {
-            if (node) {
-              sectionRefs.current[1] = node;
-            }
-          }}
-          className="relative mt-20 md:mt-24"
-        >
-          <div className="garden-section-head">
-            {renderSectionHeader(
-              'Selected Tools',
-              '精选工具',
-              '经过实测筛选的高频实用 AI 工具，覆盖对话协作、编程开发、创意设计、视频创作四大场景，全部为市面主流可正常使用产品。',
-            )}
-          </div>
-
-          <div className="mt-12 space-y-12 md:mt-16 md:space-y-16">
-            {TOOL_GROUPS.map((group) => (
-              <div key={group.title}>
-                <div className="mb-6 flex flex-col gap-2 md:mb-8">
-                  <p className="text-xs font-body font-medium uppercase tracking-[0.22em] text-white/36 md:text-sm">
-                    {group.english}
-                  </p>
-                  <h3 className="text-3xl font-body font-bold text-white md:text-5xl">
-                    {group.title}
-                  </h3>
-                </div>
-                <div className="grid gap-5 xl:grid-cols-2">
-                  {group.items.map((item) => {
-                    const currentIndex = cardIndex++;
-                    return (
-                      <article
-                        key={item.name}
-                        ref={(node) => {
-                          if (node) {
-                            cardRefs.current[currentIndex] = node;
-                          }
-                        }}
-                        className="garden-card garden-card--dense group rounded-[12px] p-6 md:p-7"
-                      >
-                        <p className="garden-meta-line">{item.release}</p>
-                        <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#fff1c9] md:text-3xl">
-                          {item.name}
-                        </h4>
-                        <p className="mt-5 text-base font-body font-light leading-7 text-white/74 md:text-lg md:leading-8">
-                          {item.summary}
-                        </p>
-                        <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
-                          <div>
-                            <p className="garden-kicker">对标参考</p>
-                            <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                              {item.benchmark}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="garden-kicker">值得关注</p>
-                            <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                              {item.watch}
-                            </p>
-                          </div>
-                        </div>
-                        {renderLinks(item.links)}
-                      </article>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section
-          ref={(node) => {
-            if (node) {
-              sectionRefs.current[2] = node;
-            }
-          }}
-          className="relative mt-20 md:mt-24"
-        >
-          <div className="garden-section-head">
-            {renderSectionHeader(
-              'Product Insights',
-              '产品观察',
-              '行业内具备代表性的 AI 平台、企业级产品与服务形态，观察产品演进方向与行业趋势。',
-              'text-[#b6e7c9]/76',
-            )}
-          </div>
-
-          <div className="mt-12 grid gap-5 md:mt-16 xl:grid-cols-2">
-            {PRODUCT_INSIGHTS.map((item) => {
-              const currentIndex = cardIndex++;
-              return (
-                <article
-                  key={item.name}
-                  ref={(node) => {
-                    if (node) {
-                      cardRefs.current[currentIndex] = node;
-                    }
-                  }}
-                  className="garden-card garden-card--dense group rounded-[12px] p-6 md:p-7"
-                >
-                  <p className="garden-meta-line">{item.release}</p>
-                  <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#d6f5e1] md:text-3xl">
-                    {item.name}
-                  </h4>
-                  <p className="mt-5 text-base font-body font-light leading-7 text-white/74 md:text-lg md:leading-8">
-                    {item.summary}
-                  </p>
-                  <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
-                    <div>
-                      <p className="garden-kicker">代表趋势</p>
-                      <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                        {item.trend}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="garden-kicker">值得关注</p>
-                      <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                        {item.watch}
-                      </p>
-                    </div>
-                  </div>
-                  {renderLinks(item.links)}
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        <section
-          ref={(node) => {
-            if (node) {
-              sectionRefs.current[3] = node;
-            }
-          }}
-          className="relative mt-20 md:mt-24"
-        >
-          <div className="garden-section-head">
-            {renderSectionHeader(
-              'Recommended Sources',
-              '信息源推荐',
-              '优质创作者、媒体与学习渠道，用于追踪行业动态、学习技术、参考工具实测经验。',
-              'text-[#afcbff]/76',
-            )}
-          </div>
-
-          <div className="mt-12 grid gap-5 md:mt-16 lg:grid-cols-2 xl:grid-cols-3">
-            {RECOMMENDED_SOURCES.map((item) => {
-              const currentIndex = cardIndex++;
-              return (
-                <article
-                  key={item.name}
-                  ref={(node) => {
-                    if (node) {
-                      cardRefs.current[currentIndex] = node;
-                    }
-                  }}
-                  className="garden-card garden-card--light group rounded-[12px] p-6"
-                >
-                  <p className="garden-meta-line">{item.type}</p>
-                  <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#d9e7ff]">
-                    {item.name}
-                  </h4>
-                  <p className="mt-5 text-sm font-body font-light leading-7 text-white/72 md:text-base">
-                    {item.summary}
-                  </p>
-                  <div className="mt-6 border-t border-white/10 pt-5">
-                    <p className="garden-kicker">适合看什么</p>
-                    <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
-                      {item.fit}
+          <div className="col-span-full">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+              {RECOMMENDED_SOURCES.map((item) => {
+                const currentIndex = cardIndex++;
+                return (
+                  <article
+                    key={item.name}
+                    ref={(node) => {
+                      if (node) {
+                        cardRefs.current[currentIndex] = node;
+                      }
+                    }}
+                    className="garden-card garden-card--light group rounded-[12px] p-6"
+                  >
+                    <p className="garden-meta-line">{item.type}</p>
+                    <h4 className="mt-3 text-2xl font-body font-bold leading-tight text-white transition-colors duration-300 group-hover:text-[#d9e7ff]">
+                      {item.name}
+                    </h4>
+                    <p className="mt-5 text-sm font-body font-light leading-7 text-white/72 md:text-base">
+                      {item.summary}
                     </p>
-                  </div>
-                  {renderLinks(item.links)}
-                </article>
-              );
-            })}
+                    <div className="mt-6 border-t border-white/10 pt-5">
+                      <p className="garden-kicker">适合看什么</p>
+                      <p className="mt-2 text-sm font-body font-light leading-7 text-white/70 md:text-base">
+                        {item.fit}
+                      </p>
+                    </div>
+                    {renderLinks(item.links)}
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         <footer className="mt-20 border-t border-dashed border-white/8 pt-6 md:mt-24">
           <p className="text-center text-sm font-body font-light text-white/34">
-            © 小蜜蜂 · Digital Garden · 持续生长中
+            &copy; 小蜜蜂 &middot; Digital Garden &middot; 持续生长中
           </p>
         </footer>
       </main>

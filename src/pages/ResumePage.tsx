@@ -52,7 +52,7 @@ export default function ResumePage() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#030706] text-white font-body">
+    <div className="min-h-screen overflow-x-hidden bg-[#030706] text-white font-body">
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_8%,rgba(255,223,162,0.09),transparent_28%),radial-gradient(circle_at_18%_18%,rgba(175,203,255,0.09),transparent_26%),linear-gradient(180deg,rgba(0,0,0,0.92)_0%,rgba(3,14,10,0.98)_48%,rgba(0,0,0,0.96)_100%)]" />
       </div>
@@ -82,7 +82,7 @@ export default function ResumePage() {
             <p className="text-sm font-body font-medium uppercase tracking-[0.22em] text-[#ffdfa2]/75">
               AI 训练师 / 大模型数据工程师
             </p>
-            <p className="mt-5 text-2xl font-body font-light leading-9 text-white/70 md:text-4xl md:leading-[1.2]">
+            <p className="mt-5 text-2xl font-body font-light leading-9 text-white/70 text-pretty md:text-4xl md:leading-[1.2]">
               1 年大模型项目实战，主攻 RAG 知识库与 SFT 训练数据全链路。
             </p>
           </div>
